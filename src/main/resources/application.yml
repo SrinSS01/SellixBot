@@ -1,0 +1,9 @@
+bot:
+  token:
+  temporaryRoleIds:
+    - temporaryRoleId1
+  sellixAuth:
+  admins:
+  webhookChannels:
+  roleToGive:
+  timePeriodInSeconds:
