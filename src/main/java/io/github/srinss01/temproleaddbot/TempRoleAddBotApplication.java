@@ -33,7 +33,8 @@ public class TempRoleAddBotApplication {
                     return;
                 }
                 byte[] bytes = is.readAllBytes();
-                Files.write(properties.toPath(), bytes);
+                String str = new String(bytes);
+                Files.writeString(properties.toPath(), str.substring(0, str.indexOf("#internals")));
                 LOGGER.info("Created application.yml file");
             }
             return;

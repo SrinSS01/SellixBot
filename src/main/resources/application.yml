@@ -1,9 +1,29 @@
 bot:
-  token:
-  temporaryRoleIds:
-    - temporaryRoleId1
-  sellixAuth:
-  admins:
-  webhookChannels:
-  roleToGive:
-  timePeriodInSeconds:
+  token: ~
+  temporaryRoleIds: ~
+  sellixAuth: ~
+  admins: ~
+  webhookChannels: ~
+  roleToGive: ~
+  timePeriodInSeconds: ~
+
+#internal
+spring:
+  h2:
+    console.enabled: true
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:file:./user_order_info_db
+    username: sa
+    password: password
+    hikari:
+      connection-test-query: select 1
+      maximum-pool-size: 20
+      auto-commit: true
+      driver-class-name: org.h2.Driver
+      username: sa
+      password: password
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.H2Dialect
