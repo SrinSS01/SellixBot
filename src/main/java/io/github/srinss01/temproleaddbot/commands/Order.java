@@ -27,6 +27,11 @@ public class Order extends CommandDataImpl implements ICustomCommandData {
             hook.editOriginal("Order not found.").queue();
             return;
         }
+        int status = (int) Double.parseDouble(String.valueOf(order.get("status")));
+        if (status != 200) {
+            interaction.getHook().editOriginalEmbeds(Embeds.Error(String.valueOf(order.get("error")))).queue();
+            return;
+        }
         Object data = order.get("data");
         if (data == null) {
             hook.editOriginal("Order not found.").queue();

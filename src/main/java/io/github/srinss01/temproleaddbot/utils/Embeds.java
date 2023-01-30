@@ -10,7 +10,11 @@ import java.util.Map;
 
 @SuppressWarnings("unchecked")
 public class Embeds {
-    private static final int color = 0x00ff3c;
+    private static final int color = 0x36393f;
+    // success color
+    private static final int success = 0x43b581;
+    // error color
+    private static final int error = 0xf04747;
 
     public static MessageEmbed Order(Object data) {
         Map<String, Object> order = ((Map<String, Map<String, Object>>) data).get("order");
@@ -32,7 +36,7 @@ public class Embeds {
                 .build();
     }
 
-    public static MessageEmbed Product(Object data) {
+    /*public static MessageEmbed Product(Object data) {
         Map<String, Object> product = ((Map<String, Map<String, Object>>) data).get("product");
         return new EmbedBuilder()
                 .setTitle("Product Data")
@@ -48,36 +52,41 @@ public class Embeds {
                 .addField("\u200b", "\u200b", true)
                 .setColor(color)
                 .build();
-    }
+    }*/
 
-    public static MessageEmbed Query(Object data) {
-        Map<String, Object> query = ((Map<String, Map<String, Object>>) data).get("query");
-        EmbedBuilder builder = new EmbedBuilder()
-                .setTitle("Query Data")
-                .setDescription("query: " + format(query.get("uniqid")))
-                .addField("Title", format(query.get("title").toString()), true)
-                .addField("Customer Email", format(query.get("customer_email").toString()), true)
-                .setColor(color);
-        List<Map<String, Object>> messages = (List<Map<String, Object>>) query.get("messages");
-        messages.forEach(message -> {
-            var role = message.get("role");
-            var msg = message.get("message");
-            var createdAt = message.get("created_at");
-            builder.addField(
-                    "%s %s".formatted(role, new SimpleDateFormat("d MMMM yyyy HH:mm").format(new Date((long) Double.parseDouble(createdAt.toString()) * 1000))),
-                    format(msg.toString()),
-                    false
-            );
-        });
-        return builder.build();
+    public static MessageEmbed Error(String errorMsg) {
+        return new EmbedBuilder()
+                .setTitle("Error")
+                .setDescription(format(errorMsg))
+                .setColor(error)
+                .build();
     }
 
     private static String format(Object str) {
         return "`%s`".formatted(str);
     }
 
-    @SuppressWarnings("SameParameterValue")
-    private static String formatter(String format, Object... args) {
+//    @SuppressWarnings("SameParameterValue")
+    /*private static String formatter(String format, Object... args) {
         return String.format(format, args);
+    }*/
+
+    public static MessageEmbed Success(Map<String, String> objects) {
+        EmbedBuilder builder = new EmbedBuilder()
+                .setColor(success);
+        objects.forEach((key, value) -> builder.addField(key, format(value), false));
+        return builder.build();
+    }
+
+    public static MessageEmbed Stock(List<Map<String, Object>> allProducts) {
+        EmbedBuilder builder = new EmbedBuilder()
+                .setTitle("Stock")
+                .setColor(color);
+        allProducts.forEach(product -> {
+            Object title = product.get("title");
+            int stock = (int) Double.parseDouble(product.get("stock").toString());
+            builder.addField(String.valueOf(title), stock == -1? "`unlimited`": format(stock), true);
+        });
+        return builder.build();
     }
 }

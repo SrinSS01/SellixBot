@@ -2,9 +2,7 @@ package io.github.srinss01.temproleaddbot.sellix_api;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import okhttp3.*;
 import org.slf4j.Logger;
 
@@ -26,7 +24,11 @@ public class Sellix {
     public Map<String, Object> getOrder(String id) {
         return apiRequest("orders/" + id);
     }
-
+    // replace order
+    public Map<String, Object> replaceOrder(String id, int quantity, String product_id) {
+        RequestBody body = RequestBody.create(GSON.toJson(Map.of("quantity", quantity, "product_id", product_id)), MediaType.parse("application/json"));
+        return apiRequest("orders/replacement/" + id, body, "POST");
+    }
     // all products
     public Map<String, Object> getAllProducts() {
         return apiRequest("products");
@@ -106,6 +108,10 @@ public class Sellix {
     public Map<String, Object> getQuery(String id) {
         return apiRequest("queries/" + id);
     }
+    // get query at a specific page
+    public Map<String, Object> getQuery(int page) {
+        return apiRequest("queries?page=" + page);
+    }
 
     public Map<String, Object> replyToQuery(String id, String message) {
         RequestBody body = RequestBody.create(GSON.toJson(Map.of("reply", message)), MediaType.parse("application/json"));
@@ -175,6 +181,7 @@ public class Sellix {
     }
 
     @AllArgsConstructor(staticName = "of")
+    @Getter @Setter
     @ToString
     private static class Product{
             String title;
@@ -193,17 +200,18 @@ public class Sellix {
             }
     }
     @AllArgsConstructor(staticName = "of")
+    @Getter @Setter
     @ToString
-    private static class Coupon{
+    public static class Coupon {
         String code;
         int discount_value;
         int max_uses;
-        List<String> products_bound;
     }
 
     @AllArgsConstructor(staticName = "of")
+    @Getter @Setter
     @ToString
-    private static class Blacklist{
+    public static class Blacklist {
         Type type;
         String data;
         String note;
@@ -216,5 +224,9 @@ public class Sellix {
                 return name();
             }
         }
+    }
+
+    public enum QueryStatus {
+        PENDING, CLOSED, SHOP_REPLY, CUSTOMER_REPLY, OPENED
     }
 }

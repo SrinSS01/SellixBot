@@ -1,8 +1,10 @@
 package io.github.srinss01.temproleaddbot.commands;
 
+import io.github.srinss01.temproleaddbot.Config;
 import io.github.srinss01.temproleaddbot.database.Database;
 import io.github.srinss01.temproleaddbot.database.UserOrders;
 import io.github.srinss01.temproleaddbot.sellix_api.Sellix;
+import io.github.srinss01.temproleaddbot.utils.Embeds;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
@@ -11,8 +13,10 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
 import net.dv8tion.jda.internal.interactions.CommandDataImpl;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("unchecked")
 public class Redeem extends CommandDataImpl implements ICustomCommandData {
@@ -41,25 +45,34 @@ public class Redeem extends CommandDataImpl implements ICustomCommandData {
             hook.editOriginal("Order not found.").queue();
             return;
         }
+        int status = (int) Double.parseDouble(String.valueOf(order.get("status")));
+        if (status != 200) {
+            hook.editOriginalEmbeds(Embeds.Error(String.valueOf(order.get("error")))).queue();
+            return;
+        }
         Object data = order.get("data");
         Map<String, Object> orderData = ((Map<String, Map<String, Object>>) data).get("order");
         if (orderData == null) {
             hook.editOriginal("Order not found.").queue();
             return;
         }
-        String status = (String) orderData.get("status");
-        if (!status.equals("COMPLETED")) {
+        String orderStatus = (String) orderData.get("status");
+        if (!orderStatus.equals("COMPLETED")) {
             hook.editOriginal("Order is not completed.").queue();
             return;
         }
-        Role roleById = guild.getRoleById(database.getConfig().getRoleToGive());
+        Config config = database.getConfig();
+        Role roleById = guild.getRoleById(config.getRoleToGive());
         if (roleById == null) {
             hook.editOriginal("Role not found.").queue();
             return;
         }
+        List<Role> tempRoles = config.getTemporaryRoleIds().stream().map(guild::getRoleById).filter(Objects::nonNull).toList();
         if (database.getUserOrdersRepository().findById(id).isEmpty()) {
             database.getUserOrdersRepository().save(new UserOrders(id, member.getIdLong()));
             guild.addRoleToMember(member, roleById).queue();
+            guild.modifyMemberRoles(member, tempRoles, null)
+                    .queue(v -> guild.modifyMemberRoles(member, null, tempRoles).queueAfter(config.getTimePeriodInSeconds(), TimeUnit.SECONDS));
             hook.editOriginal("Roles added.").queue();
         } else {
             hook.editOriginal("Order already redeemed.").queue();
