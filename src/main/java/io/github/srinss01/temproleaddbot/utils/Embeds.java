@@ -20,20 +20,22 @@ public class Embeds {
         Map<String, Object> order = ((Map<String, Map<String, Object>>) data).get("order");
         String productType = order.get("product_type").toString();
         long createdAt = (long) Double.parseDouble(order.get("created_at").toString());
-        return new EmbedBuilder()
+        EmbedBuilder builder = new EmbedBuilder()
                 .setTitle("Order Data")
                 .setDescription("order: " + format(order.get("uniqid")))
                 .addField("Product", format(order.get("product_title").toString()), true)
                 .addField("Price", format(order.get("total").toString() + " USD"), true)
                 .addField("Status", format(order.get("status").toString()), true)
-                .addField("Quantity", format(order.get("quantity").toString()), true)
+                .addField("Quantity", format((int) Double.parseDouble(order.get("quantity").toString())), true)
                 .addField("Email", format(order.get("customer_email").toString()), true)
                 .addField("Gateway", format(order.get("gateway").toString()), true)
                 .addField("Date", format(new SimpleDateFormat("d MMMM yyyy HH:mm").format(new Date(createdAt * 1000))), true)
                 .addField("Type", format(productType), true)
-                .addField(productType, productType.equals("SERIALS") ? format(String.join(", ", (List<String>) order.get("serials")).trim()) : "", false)
-                .setColor(color)
-                .build();
+                .setColor(color);
+        if (productType.equals("SERIALS")) {
+            builder.addField(productType, format(String.join("\n", (List<String>) order.get("serials")).trim()), false);
+        }
+        return builder.build();
     }
 
     /*public static MessageEmbed Product(Object data) {
@@ -63,7 +65,7 @@ public class Embeds {
     }
 
     private static String format(Object str) {
-        return "`%s`".formatted(str);
+        return "```\n%s\n```".formatted(str);
     }
 
 //    @SuppressWarnings("SameParameterValue")
@@ -85,7 +87,7 @@ public class Embeds {
         allProducts.forEach(product -> {
             int stock = (int) Double.parseDouble(product.get("stock").toString());
             String title = (stock != 0? "\\✅ ": "\\❌ ") + product.get("title");
-            builder.addField(title, stock == -1? "`Service`": format(stock), true);
+            builder.addField(title, format(stock == -1? "Service": stock), true);
         });
         return builder.build();
     }
