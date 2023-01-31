@@ -19,6 +19,7 @@ public class Events extends ListenerAdapter {
         this.database = database;
         Sellix sellix = Sellix.login(database.getConfig().getSellixAuth());
         put(new Stop());
+        put(new Shop());
         put(new Say());
         put(new Embed());
         put(new Order(sellix));
@@ -27,6 +28,7 @@ public class Events extends ListenerAdapter {
         put(new DeleteCoupon(sellix));
         put(new Stock(sellix));
         put(new Replace(sellix));
+        put(new Serials(sellix));
     }
     private static final Logger logger = org.slf4j.LoggerFactory.getLogger(Events.class);
 

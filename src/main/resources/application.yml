@@ -1,13 +1,11 @@
 bot:
-  token: ~
-  temporaryRoleIds: ~
-  sellixAuth: ~
-  admins: ~
-  webhookChannels: ~
-  roleToGive: ~
-  timePeriodInSeconds: ~
+  token:
+  temporaryRoleIds:
+  sellixAuth:
+  roleToGive:
+  timePeriodInSeconds:
 
-#internal
+
 spring:
   h2:
     console.enabled: true

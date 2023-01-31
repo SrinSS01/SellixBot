@@ -2,11 +2,13 @@ package io.github.srinss01.temproleaddbot.commands;
 
 import io.github.srinss01.temproleaddbot.sellix_api.Sellix;
 import io.github.srinss01.temproleaddbot.utils.Embeds;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.interactions.InteractionHook;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
 import net.dv8tion.jda.internal.interactions.CommandDataImpl;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -48,7 +50,10 @@ public class Replace extends CommandDataImpl implements ICustomCommandData {
         }
         String product_id = (String) order.get("product_id");
         String product_title = (String) order.get("product_title");
+        int quantity = (int) Double.parseDouble(String.valueOf(order.get("quantity")));
         Map<String, Object> response = sellix.replaceOrder(order_id, amount, product_id);
+        Map<String, Map<String, Object>> data = (Map<String, Map<String, Object>>) sellix.getOrder(order_id).get("data");
+        List<String> serials = (List<String>) data.get("order").get("serials");
         if (response == null) {
             hook.editOriginal("Order not found.").queue();
             return;
@@ -59,6 +64,10 @@ public class Replace extends CommandDataImpl implements ICustomCommandData {
             return;
         }
         String message = (String) response.get("message");
-        hook.editOriginalEmbeds(Embeds.Success(Map.of("Message", message, "Product", product_title, "Amount", String.valueOf(amount)))).queue();
+        hook.editOriginalEmbeds(new EmbedBuilder()
+                        .setDescription(String.format("```\n%s\n```", message))
+                        .addField("Serial", String.format("```\n%s\n```", serials.get(serials.size() - 1)).trim(), false)
+                        .setFooter(String.format("✅ Product: %s | Amount: %s", product_title, quantity))
+                .build()).queue();
     }
 }

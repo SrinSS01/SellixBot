@@ -17,8 +17,6 @@ public class Config {
     private String token;
     private List<String> temporaryRoleIds;
     private String sellixAuth;
-    private List<String> admins;
-    private String webhookChannels;
     private String roleToGive;
     private long timePeriodInSeconds;
 
@@ -26,12 +24,10 @@ public class Config {
     public String toString() {
         return "bot:" + '\n' +
                 "  " + "token: " + token + '\n' +
-                "  " + "temporaryRoleIds: \n" + ListToYaml(temporaryRoleIds) + '\n' +
+                "  " + "temporaryRoleIds: \n" + ListToYaml(temporaryRoleIds) +
                 "  " + "sellixAuth: " + sellixAuth + '\n' +
-                "  " + "admins: \n" + ListToYaml(admins) + '\n' +
-                "  " + "webhookChannels: " + webhookChannels + '\n' +
                 "  " + "roleToGive: " + roleToGive + '\n' +
-                "  " + "timePeriodInSeconds: " + timePeriodInSeconds + '\n';
+                "  " + "timePeriodInSeconds: " + timePeriodInSeconds;
     }
 
     private static String ListToYaml(List<String> list) {

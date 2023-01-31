@@ -9,6 +9,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.List;
+import java.util.Scanner;
 
 @SpringBootApplication
 public class TempRoleAddBotApplication {
@@ -26,17 +28,37 @@ public class TempRoleAddBotApplication {
         }
         val properties = new File("config/application.yml");
         if (!properties.exists()) {
-            try (
-                    val is = TempRoleAddBotApplication.class.getResourceAsStream("../../../../application.yml")
-            ) {
-                if (is == null) {
-                    return;
-                }
-                byte[] bytes = is.readAllBytes();
-                String str = new String(bytes);
-                Files.writeString(properties.toPath(), str.substring(0, str.indexOf("#internals")));
-                LOGGER.info("Created application.yml file");
-            }
+//            try (
+//                    val is = TempRoleAddBotApplication.class.getResourceAsStream("../../../../application.yml")
+//            ) {
+//                if (is == null) {
+//                    return;
+//                }
+//                byte[] bytes = is.readAllBytes();
+//                String str = new String(bytes);
+//                Files.writeString(properties.toPath(), str.substring(0, str.indexOf("#internals")));
+//                LOGGER.info("Created application.yml file");
+//            }
+            Scanner scanner = new Scanner(System.in);
+            System.out.print("Enter bot token: ");
+            String token = scanner.nextLine();
+            System.out.print("Enter temporary role IDs (separated by commas): ");
+            String[] temporaryRoleIds = scanner.nextLine().split("\\s*,\\s*");
+            System.out.print("Enter Sellix auth: ");
+            String sellixAuth = scanner.nextLine();
+            System.out.print("Enter role to give: ");
+            String roleToGive = scanner.nextLine();
+            System.out.print("Enter time period in seconds: ");
+            long timePeriodInSeconds = scanner.nextLong();
+            scanner.close();
+            Config _config = new Config();
+            _config.setToken(token);
+            _config.setTemporaryRoleIds(List.of(temporaryRoleIds));
+            _config.setSellixAuth(sellixAuth);
+            _config.setRoleToGive(roleToGive);
+            _config.setTimePeriodInSeconds(timePeriodInSeconds);
+            Files.writeString(properties.toPath(), _config.toString());
+            LOGGER.info("Created application.yml file, please restart the bot");
             return;
         }
         SpringApplication.run(TempRoleAddBotApplication.class, args);

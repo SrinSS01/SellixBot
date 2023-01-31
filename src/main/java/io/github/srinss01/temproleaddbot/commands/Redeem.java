@@ -13,7 +13,6 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
 import net.dv8tion.jda.internal.interactions.CommandDataImpl;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -67,12 +66,17 @@ public class Redeem extends CommandDataImpl implements ICustomCommandData {
             hook.editOriginal("Role not found.").queue();
             return;
         }
-        List<Role> tempRoles = config.getTemporaryRoleIds().stream().map(guild::getRoleById).filter(Objects::nonNull).toList();
         if (database.getUserOrdersRepository().findById(id).isEmpty()) {
             database.getUserOrdersRepository().save(new UserOrders(id, member.getIdLong()));
             guild.addRoleToMember(member, roleById).queue();
-            guild.modifyMemberRoles(member, tempRoles, null)
-                    .queue(v -> guild.modifyMemberRoles(member, null, tempRoles).queueAfter(config.getTimePeriodInSeconds(), TimeUnit.SECONDS));
+            for (String temporaryRoleId : config.getTemporaryRoleIds()) {
+                Role role = guild.getRoleById(temporaryRoleId);
+                if (role != null) {
+                    guild.addRoleToMember(member, role).queue(
+                        v -> guild.removeRoleFromMember(member, role).queueAfter(config.getTimePeriodInSeconds(), TimeUnit.SECONDS)
+                    );
+                }
+            }
             hook.editOriginal("Roles added.").queue();
         } else {
             hook.editOriginal("Order already redeemed.").queue();

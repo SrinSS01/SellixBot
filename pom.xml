@@ -10,7 +10,7 @@
     </parent>
     <groupId>io.github.srinss01</groupId>
     <artifactId>TempRoleAddBot</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <name>TempRoleAddBot</name>
     <description>TempRoleAddBot</description>
     <properties>
@@ -81,5 +81,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

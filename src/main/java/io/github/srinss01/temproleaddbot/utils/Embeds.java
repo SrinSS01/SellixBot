@@ -10,7 +10,7 @@ import java.util.Map;
 
 @SuppressWarnings("unchecked")
 public class Embeds {
-    private static final int color = 0x36393f;
+    private static final int color = 0x2f3136;
     // success color
     private static final int success = 0x43b581;
     // error color
@@ -31,7 +31,7 @@ public class Embeds {
                 .addField("Gateway", format(order.get("gateway").toString()), true)
                 .addField("Date", format(new SimpleDateFormat("d MMMM yyyy HH:mm").format(new Date(createdAt * 1000))), true)
                 .addField("Type", format(productType), true)
-                .addField(productType, productType.equals("SERIALS") ? format(String.join(", ", (List<String>) order.get("serials")).trim()) : order.get("file_attachment_uniqid").toString(), false)
+                .addField(productType, productType.equals("SERIALS") ? format(String.join(", ", (List<String>) order.get("serials")).trim()) : "", false)
                 .setColor(color)
                 .build();
     }
@@ -83,9 +83,9 @@ public class Embeds {
                 .setTitle("Stock")
                 .setColor(color);
         allProducts.forEach(product -> {
-            Object title = product.get("title");
             int stock = (int) Double.parseDouble(product.get("stock").toString());
-            builder.addField(String.valueOf(title), stock == -1? "`unlimited`": format(stock), true);
+            String title = (stock != 0? "\\✅ ": "\\❌ ") + product.get("title");
+            builder.addField(title, stock == -1? "`Service`": format(stock), true);
         });
         return builder.build();
     }
