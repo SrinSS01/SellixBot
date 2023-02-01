@@ -1,4 +1,4 @@
-package io.github.srinss01.temproleaddbot.sellix_api;
+package io.github.srinss01.sellixbot.sellix_api;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

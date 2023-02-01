@@ -1,4 +1,4 @@
-package io.github.srinss01.temproleaddbot;
+package io.github.srinss01.sellixbot;
 
 import lombok.val;
 import org.slf4j.Logger;
@@ -28,22 +28,15 @@ public class TempRoleAddBotApplication {
         }
         val properties = new File("config/application.yml");
         if (!properties.exists()) {
-//            try (
-//                    val is = TempRoleAddBotApplication.class.getResourceAsStream("../../../../application.yml")
-//            ) {
-//                if (is == null) {
-//                    return;
-//                }
-//                byte[] bytes = is.readAllBytes();
-//                String str = new String(bytes);
-//                Files.writeString(properties.toPath(), str.substring(0, str.indexOf("#internals")));
-//                LOGGER.info("Created application.yml file");
-//            }
             Scanner scanner = new Scanner(System.in);
             System.out.print("Enter bot token: ");
             String token = scanner.nextLine();
             System.out.print("Enter temporary role IDs (separated by commas): ");
             String[] temporaryRoleIds = scanner.nextLine().split("\\s*,\\s*");
+//            System.out.println("Enter admin role IDs (separated by commas): ");
+//            String[] adminRoleIds = scanner.nextLine().split("\\s*,\\s*");
+            System.out.print("Enter log channel ID: ");
+            String logChannelID = scanner.nextLine();
             System.out.print("Enter Sellix auth: ");
             String sellixAuth = scanner.nextLine();
             System.out.print("Enter role to give: ");
@@ -54,6 +47,8 @@ public class TempRoleAddBotApplication {
             Config _config = new Config();
             _config.setToken(token);
             _config.setTemporaryRoleIds(List.of(temporaryRoleIds));
+//            _config.setAdminRoleIds(List.of(adminRoleIds));
+            _config.setLogChannelId(logChannelID);
             _config.setSellixAuth(sellixAuth);
             _config.setRoleToGive(roleToGive);
             _config.setTimePeriodInSeconds(timePeriodInSeconds);
@@ -63,5 +58,4 @@ public class TempRoleAddBotApplication {
         }
         SpringApplication.run(TempRoleAddBotApplication.class, args);
     }
-
 }

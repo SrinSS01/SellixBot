@@ -1,6 +1,8 @@
 bot:
   token:
   temporaryRoleIds:
+#  adminRoleIds:
+  logChannelId:
   sellixAuth:
   roleToGive:
   timePeriodInSeconds:

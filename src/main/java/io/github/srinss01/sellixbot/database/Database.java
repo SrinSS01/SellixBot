@@ -1,6 +1,6 @@
-package io.github.srinss01.temproleaddbot.database;
+package io.github.srinss01.sellixbot.database;
 
-import io.github.srinss01.temproleaddbot.Config;
+import io.github.srinss01.sellixbot.Config;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.stereotype.Component;

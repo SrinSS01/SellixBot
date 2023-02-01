@@ -1,6 +1,6 @@
-package io.github.srinss01.temproleaddbot;
+package io.github.srinss01.sellixbot;
 
-import io.github.srinss01.temproleaddbot.database.Database;
+import io.github.srinss01.sellixbot.database.Database;
 import lombok.AllArgsConstructor;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;

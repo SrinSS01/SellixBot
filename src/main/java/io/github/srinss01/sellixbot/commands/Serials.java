@@ -1,9 +1,11 @@
-package io.github.srinss01.temproleaddbot.commands;
+package io.github.srinss01.sellixbot.commands;
 
-import io.github.srinss01.temproleaddbot.sellix_api.Sellix;
-import io.github.srinss01.temproleaddbot.utils.Embeds;
+import io.github.srinss01.sellixbot.sellix_api.Sellix;
+import io.github.srinss01.sellixbot.utils.Embeds;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.interactions.InteractionHook;
+import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
 import net.dv8tion.jda.internal.interactions.CommandDataImpl;
@@ -19,6 +21,7 @@ public class Serials extends CommandDataImpl implements ICustomCommandData {
         super("serials", "Retrieve delivered goods (excluding order info).");
         this.sellix = sellix;
         addOption(OptionType.STRING, "order_id", "The order ID.", true);
+        setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR));
     }
 
     @Override

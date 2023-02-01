@@ -1,4 +1,4 @@
-package io.github.srinss01.temproleaddbot;
+package io.github.srinss01.sellixbot;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -16,6 +16,8 @@ import java.util.List;
 public class Config {
     private String token;
     private List<String> temporaryRoleIds;
+//    private List<String> adminRoleIds;
+    private String logChannelId;
     private String sellixAuth;
     private String roleToGive;
     private long timePeriodInSeconds;
@@ -25,6 +27,8 @@ public class Config {
         return "bot:" + '\n' +
                 "  " + "token: " + token + '\n' +
                 "  " + "temporaryRoleIds: \n" + ListToYaml(temporaryRoleIds) +
+//                "  " + "adminRoleIds: \n" + ListToYaml(adminRoleIds) +
+                "  " + "logChannelId: " + logChannelId + '\n' +
                 "  " + "sellixAuth: " + sellixAuth + '\n' +
                 "  " + "roleToGive: " + roleToGive + '\n' +
                 "  " + "timePeriodInSeconds: " + timePeriodInSeconds;

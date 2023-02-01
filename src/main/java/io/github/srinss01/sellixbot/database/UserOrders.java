@@ -1,4 +1,4 @@
-package io.github.srinss01.temproleaddbot.database;
+package io.github.srinss01.sellixbot.database;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

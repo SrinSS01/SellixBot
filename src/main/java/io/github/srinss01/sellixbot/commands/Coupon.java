@@ -1,7 +1,9 @@
-package io.github.srinss01.temproleaddbot.commands;
+package io.github.srinss01.sellixbot.commands;
 
-import io.github.srinss01.temproleaddbot.sellix_api.Sellix;
-import io.github.srinss01.temproleaddbot.utils.Embeds;
+import io.github.srinss01.sellixbot.sellix_api.Sellix;
+import io.github.srinss01.sellixbot.utils.Embeds;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
 import net.dv8tion.jda.internal.interactions.CommandDataImpl;
@@ -20,6 +22,7 @@ public class Coupon extends CommandDataImpl implements ICustomCommandData {
         addOption(OptionType.INTEGER, "discount_value", "Discount value of the Coupon.", true);
         // max_uses
         addOption(OptionType.INTEGER, "max_uses", "How many times can the coupon be used, defaulted to -1.", false);
+        setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR));
     }
 
     @SuppressWarnings("unchecked")

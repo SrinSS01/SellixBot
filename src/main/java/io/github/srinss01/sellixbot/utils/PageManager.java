@@ -1,4 +1,4 @@
-package io.github.srinss01.temproleaddbot.utils;
+package io.github.srinss01.sellixbot.utils;
 
 import java.util.HashMap;
 import java.util.Map;

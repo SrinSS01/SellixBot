@@ -1,4 +1,4 @@
-package io.github.srinss01.temproleaddbot.utils;
+package io.github.srinss01.sellixbot.utils;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -64,7 +64,7 @@ public class Embeds {
                 .build();
     }
 
-    private static String format(Object str) {
+    static String format(Object str) {
         return "```\n%s\n```".formatted(str);
     }
 
@@ -90,5 +90,9 @@ public class Embeds {
             builder.addField(title, format(stock == -1? "Service": stock), true);
         });
         return builder.build();
+    }
+
+    public static int randomColor() {
+        return (int) (Math.random() * 0x1000000);
     }
 }

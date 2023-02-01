@@ -1,14 +1,18 @@
-package io.github.srinss01.temproleaddbot;
+package io.github.srinss01.sellixbot;
 
-import io.github.srinss01.temproleaddbot.commands.*;
-import io.github.srinss01.temproleaddbot.database.Database;
-import io.github.srinss01.temproleaddbot.sellix_api.Sellix;
+import io.github.srinss01.sellixbot.commands.*;
+import io.github.srinss01.sellixbot.database.Database;
+import io.github.srinss01.sellixbot.sellix_api.Sellix;
+import io.github.srinss01.sellixbot.utils.UserLogFormatter;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.guild.GuildReadyEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
+
+import java.util.Objects;
 
 @Component
 public class Events extends ListenerAdapter {
@@ -51,6 +55,12 @@ public class Events extends ListenerAdapter {
 
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
-        commandsCollection.get(event.getName()).execute(event);
+        Config config = database.getConfig();
+        User user = event.getUser();
+        String name = event.getName();
+        Objects.requireNonNull(Objects.requireNonNull(event.getGuild()).getTextChannelById(config.getLogChannelId()))
+                .sendMessageEmbeds(UserLogFormatter.format(user, event.getChannel().getAsMention(), event.getCommandId(), name))
+                .queue();
+        commandsCollection.get(name).execute(event);
     }
 }
