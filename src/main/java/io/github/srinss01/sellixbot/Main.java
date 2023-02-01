@@ -20,6 +20,9 @@ public class Main implements CommandLineRunner {
     @Override
     public void run(String... args) {
         String token = database.getConfig().getToken();
+        if (token == null || token.isEmpty()) {
+            return;
+        }
         logger.info("Starting bot with token: {}", token);
         JDABuilder
                 .createDefault(token)
