@@ -27,13 +27,13 @@ jobs:
         java-version: '17.0.6'
         distribution: 'temurin'
         cache: maven
+    - name: Build with Maven
+      run: mvn clean package
     - name: Upload JAR to GitHub Releases
       uses: actions/upload-artifact@v3
       with:
         name: SellixBot.jar
         path: target/SellixBot-0.0.1.jar
-    - name: Build with Maven
-      run: mvn clean package
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     #- name: Update dependency graph
