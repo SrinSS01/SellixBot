@@ -27,6 +27,11 @@ jobs:
         java-version: '17.0.6'
         distribution: 'temurin'
         cache: maven
+    - name: Upload JAR to GitHub Releases
+      uses: actions/upload-artifact@v3
+      with:
+        name: SellixBot.jar
+        path: target/SellixBot-0.0.1.jar
     - name: Build with Maven
       run: mvn -DskipTests -B package --file pom.xml
 
