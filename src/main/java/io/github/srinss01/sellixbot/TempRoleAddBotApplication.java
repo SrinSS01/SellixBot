@@ -33,8 +33,6 @@ public class TempRoleAddBotApplication {
             String token = scanner.nextLine();
             System.out.print("Enter temporary role IDs (separated by commas): ");
             String[] temporaryRoleIds = scanner.nextLine().split("\\s*,\\s*");
-//            System.out.println("Enter admin role IDs (separated by commas): ");
-//            String[] adminRoleIds = scanner.nextLine().split("\\s*,\\s*");
             System.out.print("Enter log channel ID: ");
             String logChannelID = scanner.nextLine();
             System.out.print("Enter Sellix auth: ");
@@ -47,14 +45,12 @@ public class TempRoleAddBotApplication {
             Config _config = new Config();
             _config.setToken(token);
             _config.setTemporaryRoleIds(List.of(temporaryRoleIds));
-//            _config.setAdminRoleIds(List.of(adminRoleIds));
             _config.setLogChannelId(logChannelID);
             _config.setSellixAuth(sellixAuth);
             _config.setRoleToGive(roleToGive);
             _config.setTimePeriodInSeconds(timePeriodInSeconds);
             Files.writeString(properties.toPath(), _config.toString());
             LOGGER.info("Created application.yml file, please restart the bot");
-            return;
         }
         SpringApplication.run(TempRoleAddBotApplication.class, args);
     }
