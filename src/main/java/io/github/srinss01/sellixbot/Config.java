@@ -16,7 +16,7 @@ import java.util.List;
 public class Config {
     private String token;
     private List<String> temporaryRoleIds;
-//    private List<String> adminRoleIds;
+    private String key;
     private String logChannelId;
     private String sellixAuth;
     private String roleToGive;
@@ -27,7 +27,7 @@ public class Config {
         return "bot:" + '\n' +
                 "  " + "token: " + token + '\n' +
                 "  " + "temporaryRoleIds: \n" + ListToYaml(temporaryRoleIds) +
-//                "  " + "adminRoleIds: \n" + ListToYaml(adminRoleIds) +
+                "  " + "key: " + key + '\n' +
                 "  " + "logChannelId: " + logChannelId + '\n' +
                 "  " + "sellixAuth: " + sellixAuth + '\n' +
                 "  " + "roleToGive: " + roleToGive + '\n' +

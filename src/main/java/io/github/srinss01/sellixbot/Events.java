@@ -42,15 +42,7 @@ public class Events extends ListenerAdapter {
     @Override
     public void onReady(ReadyEvent event) {
         logger.info("{} is ready.", event.getJDA().getSelfUser().getName());
-    }
-
-    @Override
-    public void onGuildReady(GuildReadyEvent event) {
-        event
-                .getGuild()
-                .updateCommands()
-                .addCommands(commandsCollection.values())
-                .queue();
+        event.getJDA().updateCommands().addCommands(commandsCollection.values()).queue();
     }
 
     @Override

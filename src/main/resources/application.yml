@@ -1,11 +1,11 @@
 bot:
-  token: ~
-  temporaryRoleIds: ~
-#  adminRoleIds:
-  logChannelId: ~
-  sellixAuth: ~
-  roleToGive: ~
-  timePeriodInSeconds: 0
+  token: ${TOKEN}
+  temporaryRoleIds: ${TEMPORARY_ROLE_IDS}
+  key: ${ACTIVATION_KEY}
+  logChannelId: ${LOG_CHANNEL_ID}
+  sellixAuth: ${SELLIX_AUTH}
+  roleToGive: ${ROLE_TO_GIVE}
+  timePeriodInSeconds: ${TIME_PERIOD_IN_SECONDS}
 
 
 spring:

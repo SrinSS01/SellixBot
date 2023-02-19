@@ -3,11 +3,16 @@ package io.github.srinss01.sellixbot;
 import io.github.srinss01.sellixbot.database.Database;
 import lombok.AllArgsConstructor;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.exceptions.InvalidTokenException;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.slf4j.Logger;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
+import javax.swing.*;
+
+import java.awt.*;
 
 import static net.dv8tion.jda.api.requests.GatewayIntent.*;
 
@@ -24,21 +29,27 @@ public class Main implements CommandLineRunner {
             return;
         }
         logger.info("Starting bot with token: {}", token);
-        JDABuilder
-                .createDefault(token)
-                .enableIntents(
-                        GUILD_MEMBERS,
-                        MESSAGE_CONTENT,
-                        GUILD_EMOJIS_AND_STICKERS,
-                        GUILD_VOICE_STATES,
-                        GUILD_PRESENCES
-                )
-                .setMemberCachePolicy(MemberCachePolicy.ALL)
-                .addEventListeners(events)
-                .disableCache(
-                        CacheFlag.EMOJI,
-                        CacheFlag.STICKER,
-                        CacheFlag.VOICE_STATE
-                ).build();
+        try {
+            JDABuilder
+                    .createDefault(token)
+                    .enableIntents(
+                            GUILD_MEMBERS,
+                            MESSAGE_CONTENT,
+                            GUILD_EMOJIS_AND_STICKERS,
+                            GUILD_VOICE_STATES,
+                            GUILD_PRESENCES
+                    )
+                    .setMemberCachePolicy(MemberCachePolicy.ALL)
+                    .addEventListeners(events)
+                    .disableCache(
+                            CacheFlag.EMOJI,
+                            CacheFlag.STICKER,
+                            CacheFlag.VOICE_STATE
+                    ).build();
+        } catch (InvalidTokenException e) {
+            if (GraphicsEnvironment.isHeadless()) {
+                throw e;
+            } else JOptionPane.showMessageDialog(null, e.getMessage() + "\n" + token, "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 }
