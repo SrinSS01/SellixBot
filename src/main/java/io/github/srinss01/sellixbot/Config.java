@@ -22,6 +22,8 @@ public class Config {
     private String roleToGive;
     private long timePeriodInSeconds;
 
+    static boolean isActivated = false;
+
     @Override
     public String toString() {
         return "bot:" + '\n' +

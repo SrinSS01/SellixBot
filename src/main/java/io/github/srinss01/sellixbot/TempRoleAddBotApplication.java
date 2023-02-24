@@ -69,6 +69,7 @@ public class TempRoleAddBotApplication extends JFrame {
             scanner.close();
             String[] temporaryRoleIds = temporaryRoleIdsStr.split("\\s*,\\s*");
             Config _config = new Config();
+            Config.isActivated = true;
             _config.setToken(token);
             _config.setTemporaryRoleIds(List.of(temporaryRoleIds));
             _config.setKey(activationKey);

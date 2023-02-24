@@ -1,5 +1,7 @@
 package io.github.srinss01.sellixbot;
 
+import com.mashape.unirest.http.exceptions.UnirestException;
+import io.github.srinss01.sellixbot.auth.ActivationStatus;
 import io.github.srinss01.sellixbot.database.Database;
 import lombok.AllArgsConstructor;
 import net.dv8tion.jda.api.JDABuilder;
@@ -14,6 +16,7 @@ import javax.swing.*;
 
 import java.awt.*;
 
+import static io.github.srinss01.sellixbot.TempRoleAddBotApplication.headless;
 import static net.dv8tion.jda.api.requests.GatewayIntent.*;
 
 @Component
@@ -21,14 +24,23 @@ import static net.dv8tion.jda.api.requests.GatewayIntent.*;
 public class Main implements CommandLineRunner {
     final Database database;
     final Events events;
-    private static final Logger logger = org.slf4j.LoggerFactory.getLogger(Main.class);
+    private static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(Main.class);
     @Override
-    public void run(String... args) {
-        String token = database.getConfig().getToken();
+    public void run(String... args) throws UnirestException {
+        Config config = database.getConfig();
+        String activationKey = config.getKey();
+        if (!Config.isActivated && !ActivationStatus.check(activationKey)) {
+            if (!headless) {
+                JOptionPane.showMessageDialog(null, "Invalid activation key", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            LOGGER.error("Invalid activation key");
+            System.exit(1);
+        }
+        String token = config.getToken();
         if (token == null || token.isEmpty()) {
             return;
         }
-        logger.info("Starting bot with token: {}", token);
+        LOGGER.info("Starting bot with token: {}", token);
         try {
             JDABuilder
                     .createDefault(token)
